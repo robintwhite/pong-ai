@@ -11,10 +11,17 @@ conda env create -f pong-ai.yml
 ```
 Run with:
 ```
-python play.py
+python play.py [-h]
 ```
 <br>
-Requires some configuration for window capture position. <br>
+Requires some configuration for window capture position. See help for inputs. <br>
+
+Test image processing with:
+```
+python process_test.py
+```
+Adjustments to threshold, and pong size may be required.
+<br>
 
 Game version: [ponggame.org](https://www.ponggame.org/)
 

@@ -2,6 +2,7 @@ import time
 import cv2
 from utils.screengrab import screen_record
 from utils.directkeys import PressKey, ReleaseKey
+import argparse
 import numpy as np
 import os
 
@@ -189,17 +190,32 @@ def get_play_area(img, bkgrnd=10):
 
 if __name__ == "__main__":
 
-    if not os.path.exists('Frames'):
-        os.mkdir('Frames')
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-t", "--top", type=int, default=120,
+                    help="top offset for capture position")
+    ap.add_argument("-l", "--left", type=int, default=1081, help="left offset for capture position")
+    ap.add_argument("-wx", "--width", type=int, default=700, help="width for capture position")
+    ap.add_argument("-hx", "--height", type=int, default=500, help="height for capture position")
+    ap.add_argument("-s", "--save-frames", required=False, default=False,
+                    help="save frames as .png - will create new folder Frames. Cuts fps to 30fps")
+    ap.add_argument("-f", "--show-frames", required=False, default=True,
+                    help="display captured frames")
+    ap.add_argument("-a", "--ai", type=int, default=3, help="ai option: 1 simple, 2 direction, 3 rebound")
+    args = vars(ap.parse_args())
+
+    save_frames = args['save_frames']
+    show_frames = args['show_frames']
+    show_fps = True
+
+    if save_frames: # cuts frames to 30 fps
+        if not os.path.exists('Frames'):
+            os.mkdir('Frames')
     image_dir = 'Frames'
     image_prefix = 'pong_ai_'
-    show_fps = False
-    show_frames = True
-    save_frames = False # cuts frames to 30 fps
-    ai = 3 # 1 for simple follow, 2 for added direction, 3 for rebound
+    ai = args['ai'] # 1 for simple follow, 2 for added direction, 3 for rebound
 
     # Screen capture position
-    pos = {"top": 120, "left": 1081, "width": 700, "height": 500}
+    pos = {"top": args['top'], "left": args['left'], "width": args['width'], "height": args['height']}
     # Keyboard scan codes
     up = 0x25 #K
     down = 0x32 #M
